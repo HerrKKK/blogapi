@@ -1,7 +1,7 @@
 package BlogAPI.Controller;
 
 import BlogAPI.Entity.TestEntity;
-import BlogAPI.Model.Response;
+import BlogAPI.Common.Model.Response;
 import BlogAPI.Service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package BlogAPI.Model;
+package BlogAPI.Common.Model;
 
 import lombok.Getter;
 import lombok.Setter;
