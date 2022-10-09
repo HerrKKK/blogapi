@@ -1,0 +1,14 @@
+server:
+  port: 8084
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/BlogDB?characterEncoding=utf-8&useSSL=false&useTimezone=true
+    # type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 153226
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MariaDB102Dialect
+    show-sql: true
