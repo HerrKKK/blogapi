@@ -17,6 +17,7 @@ public class SysUser {
 
     @Column(unique = true)
     private String userName;
+    @Column(unique = true)
     private String email;
     private String pwdHash;
     private String salt;
