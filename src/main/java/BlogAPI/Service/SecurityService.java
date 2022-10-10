@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.util.Random;
+import java.util.UUID;
+
 @Service
 public class SecurityService {
     private final UserDao userDao;
@@ -14,13 +15,11 @@ public class SecurityService {
         this.userDao = userDao;
     }
     public static String generateSalt() {
-        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var random = new Random();
-        var sb = new StringBuffer();
-        for (int i = 0; i < 32; i++) {
-            sb.append(str.charAt(random.nextInt(str.length())));
-        }
-        return DigestUtils.md5DigestAsHex(sb.toString().getBytes());
+        return DigestUtils
+              .md5DigestAsHex(UUID.randomUUID()
+                             .toString()
+                             .replaceAll("-", "")
+                             .getBytes());
     }
 
     public static String encrypt(String password, String salt) {
