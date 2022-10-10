@@ -2,8 +2,7 @@ package BlogAPI.common;
 
 import BlogAPI.BlogApiApplication;
 import BlogAPI.Common.shiro.CustomRealm;
-import BlogAPI.Entity.SysUser;
-import BlogAPI.Mapper.UserDao;
+import BlogAPI.Service.SecurityService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -18,20 +17,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = BlogApiApplication.class)
 public class AuthenticationTest extends TestBase {
     @Autowired
-    private UserDao userDao;
-    @Autowired
     private CustomRealm customRealm;
+    @Autowired
+    private SecurityService securityService;
 
     @Test
     public void testAuthentication() {
-        addUser();
 
         var defaultSecurityManager = new DefaultSecurityManager();
         defaultSecurityManager.setRealm(customRealm);
 
         SecurityUtils.setSecurityManager(defaultSecurityManager);
         var subject = SecurityUtils.getSubject();
-        var usernamePasswordToken = new UsernamePasswordToken("wwr", "123456");
+        var usernamePasswordToken = new UsernamePasswordToken("wwr",
+                securityService.calculateUserPwdHash("wwr",
+                                                      "153226"));
         try {
             subject.login(usernamePasswordToken);
             System.out.println("isAuthenticated:" + subject.isAuthenticated());
@@ -39,19 +39,6 @@ public class AuthenticationTest extends TestBase {
             subject.checkPermission("admin");
         } catch (AuthenticationException e) {
             System.out.println("isAuthenticated:" + subject.isAuthenticated());
-        } finally {
-            removeUser();
         }
-    }
-
-    private void addUser() {
-        var newUser = new SysUser();
-        newUser.setUserName("wwr");
-        newUser.setPwdHash("123456");
-        userDao.save(newUser);
-    }
-
-    private void removeUser() {
-        userDao.delete(userDao.findByUserName("wwr"));
     }
 }
