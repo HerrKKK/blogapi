@@ -1,17 +1,16 @@
 package BlogAPI.Service;
 
 import BlogAPI.Entity.SysUser;
-import BlogAPI.Mapper.UserDao;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
 
 @Service
 public class InitService implements ApplicationRunner {
-    private final UserDao userDao;
+    private final SecurityService userService;
 
-    public InitService(UserDao userDao) {
-        this.userDao = userDao;
+    public InitService(SecurityService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -24,10 +23,9 @@ public class InitService implements ApplicationRunner {
         var admin = new SysUser();
         admin.setUserName("wwr");
         admin.setEmail("iswangwr@gmail.com");
-        admin.setSalt(SecurityService.generateSalt());
-        admin.setPwdHash(SecurityService.encrypt("153226", admin.getSalt()));
+        admin.setPwdHash("153226");
         try {
-            userDao.save(admin);
+            userService.addUser(admin);
         } catch (Exception e) {
             System.out.println("admin existed");
         }
