@@ -39,6 +39,12 @@ public class SecurityService {
         user.setPwdHash(encrypt(user.getPwdHash(), user.getSalt()));
         return userDao.save(user);
     }
+    public SysUser getUser(SysUser user) {
+        return userDao
+              .findByIdOrUserNameOrEmail(user.getId(),
+                                         user.getUserName(),
+                                         user.getEmail());
+    }
     public SysUser updateUser(SysUser user) {
         if (user.getId() == 0) {
             user.setId(userDao
