@@ -10,6 +10,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -79,7 +80,14 @@ public class UserService {
         return userDao.save(user);
     }
     public List<SysUser> getUsers(SysUser user) {
-        return userDao.findAll(Example.of(user));
+        var matcher = ExampleMatcher.matching();
+        if (user.getId() == 0) {
+            matcher = matcher.withIgnorePaths("id");
+        }
+        if (user.getRoles().size() == 0) {
+            matcher = matcher.withIgnorePaths("roles");
+        }
+        return userDao.findAll(Example.of(user, matcher));
     }
     public SysUser updateUser(SysUser user) {
         if (user.getId() == 0) {

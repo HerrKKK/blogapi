@@ -11,15 +11,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BlogApiApplication.class)
-public class AuthenticationTest extends TestBase {
+public class UserTest {
     @Autowired
     private UserService userService;
+
     @Test
-    public void testAuthentication() {
+    public void testUser() {
         var user = new SysUser();
+        System.out.println(user.getId());
+        System.out.println(user.getUserName());
+        System.out.println(user.getEmail());
+        System.out.println(user.getPwdHash());
+        System.out.println(user.getSalt());
+        System.out.println(user.getRoles());
+
         user.setUserName("wwr");
-        user.setPwdHash("153226");
-        userService.login(user);
-        userService.logout();
+        var list = userService.getUsers(user);
+        System.out.println(list.size());
     }
 }

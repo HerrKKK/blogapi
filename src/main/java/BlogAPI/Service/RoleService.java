@@ -23,7 +23,14 @@ public class RoleService {
     }
 
     public List<SysRole> getRoles(SysRole sysRole) {
-        return roleDao.findAll(Example.of(sysRole));
+        var matcher = ExampleMatcher.matching();
+        if (sysRole.getId() == 0) {
+            matcher = matcher.withIgnorePaths("id");
+        }
+        if (sysRole.getPermissions().size() == 0) {
+            matcher = matcher.withIgnorePaths("permissions");
+        }
+        return roleDao.findAll(Example.of(sysRole, matcher));
     }
 
     public SysRole updateRole(SysRole sysRole) {
