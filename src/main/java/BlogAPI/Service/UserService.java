@@ -1,8 +1,13 @@
 package BlogAPI.Service;
 
+import BlogAPI.Common.shiro.CustomRealm;
 import BlogAPI.Entity.SysRole;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -15,11 +20,14 @@ import java.util.UUID;
 public class UserService {
     private final UserDao userDao;
     private final RoleService roleService;
+    private final CustomRealm customRealm;
     @Autowired
     public UserService(UserDao userDao,
-                       RoleService roleService) {
+                       RoleService roleService,
+                       CustomRealm customRealm) {
         this.userDao = userDao;
         this.roleService = roleService;
+        this.customRealm = customRealm;
     }
     public static String generateSalt() {
         return DigestUtils
@@ -38,6 +46,31 @@ public class UserService {
                     userDao.findByUserName(userName).getSalt());
         } catch (Exception e) {
             return "";
+        }
+    }
+    public void login(SysUser user) {
+        try {
+            var defaultSecurityManager = new DefaultSecurityManager();
+            defaultSecurityManager.setRealm(customRealm);
+
+            SecurityUtils.setSecurityManager(defaultSecurityManager);
+            var subject = SecurityUtils.getSubject();
+            var usernamePasswordToken = new UsernamePasswordToken(user.getUserName(),
+                                             calculateUserPwdHash(user.getUserName(),
+                                                                  user.getPwdHash()));
+            subject.login(usernamePasswordToken);
+            System.out.println("isAuthenticated:" + subject.isAuthenticated());
+        } catch (AuthenticationException e) {
+            throw e;
+        }
+    }
+    public void logout() {
+        try {
+            var subject = SecurityUtils.getSubject();
+            subject.logout();
+            System.out.println("isAuthenticated:" + subject.isAuthenticated());
+        } catch (AuthenticationException e) {
+            throw e;
         }
     }
     public SysUser addUser(SysUser user) {
