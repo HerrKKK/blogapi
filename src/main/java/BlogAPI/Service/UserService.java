@@ -1,5 +1,6 @@
 package BlogAPI.Service;
 
+import BlogAPI.Entity.SysRole;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,12 @@ import java.util.UUID;
 @Service
 public class UserService {
     private final UserDao userDao;
+    private final RoleService roleService;
     @Autowired
-    public UserService(UserDao userDao) {
+    public UserService(UserDao userDao,
+                       RoleService roleService) {
         this.userDao = userDao;
+        this.roleService = roleService;
     }
     public static String generateSalt() {
         return DigestUtils
@@ -58,5 +62,13 @@ public class UserService {
                       .findByIdOrUserNameOrEmail(user.getId(),
                                                  user.getUserName(),
                                                  user.getEmail()));
+    }
+    public void addRoleToUser(SysUser user, SysRole role) {
+        user.getRoles().add(role);
+        userDao.save(user);
+    }
+    public void removeRoleFromUser(SysUser user, SysRole role) {
+        user.getRoles().remove(role);
+        userDao.save(user);
     }
 }
