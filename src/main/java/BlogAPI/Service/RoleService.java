@@ -1,6 +1,5 @@
 package BlogAPI.Service;
 
-import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.RoleDao;
 import BlogAPI.Entity.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;

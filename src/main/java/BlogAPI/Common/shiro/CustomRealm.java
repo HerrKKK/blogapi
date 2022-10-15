@@ -31,6 +31,9 @@ public class CustomRealm extends AuthorizingRealm {
         if (user != null) {
             for (var role : user.getRoles()) {
                 roles.add(role.getName());
+                for (var permission : role.getPermissions()) {
+                    permissions.add(permission.getName());
+                }
             }
         }
 
