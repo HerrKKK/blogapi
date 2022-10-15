@@ -39,7 +39,7 @@ public class UserController {
         var res = new Response();
 
         try {
-            res.setObj(userService.getUser(user));
+            res.setObj(userService.getUsers(user));
             res.setStatus("success");
         } catch (Exception e) {
             res.setMessage(e.getMessage());

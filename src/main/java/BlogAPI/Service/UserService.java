@@ -3,9 +3,11 @@ package BlogAPI.Service;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,11 +41,8 @@ public class UserService {
         user.setPwdHash(encrypt(user.getPwdHash(), user.getSalt()));
         return userDao.save(user);
     }
-    public SysUser getUser(SysUser user) {
-        return userDao
-              .findByIdOrUserNameOrEmail(user.getId(),
-                                         user.getUserName(),
-                                         user.getEmail());
+    public List<SysUser> getUsers(SysUser user) {
+        return userDao.findAll(Example.of(user));
     }
     public SysUser updateUser(SysUser user) {
         if (user.getId() == 0) {
