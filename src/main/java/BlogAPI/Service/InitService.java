@@ -29,8 +29,7 @@ public class InitService implements ApplicationRunner {
         role.setName("admin");
 
         try {
-            role = roleService.newRole(role);
-            admin.getRoles().add(role);
+            admin.getRoles().add(roleService.newRole(role));
         } catch (Exception e) {
             System.out.println("admin role existed");
         }
