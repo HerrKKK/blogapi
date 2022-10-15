@@ -22,6 +22,6 @@ public class SysUser {
     private String pwdHash;
     private String salt;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<SysRole> roles = new HashSet<>();
 }

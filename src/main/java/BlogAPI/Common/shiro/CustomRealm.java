@@ -1,6 +1,7 @@
 package BlogAPI.Common.shiro;
 
 import BlogAPI.Mapper.UserDao;
+import BlogAPI.Service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,15 +19,22 @@ public class CustomRealm extends AuthorizingRealm {
     @Autowired
     private UserDao userDao;
 
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(
                 PrincipalCollection principalCollection) {
-        // String userName = (String) principalCollection.getPrimaryPrincipal();
-
+        String userName = (String) principalCollection.getPrimaryPrincipal();
         Set<String> roles = new HashSet<>();
         Set<String> permissions = new HashSet<>();
 
-        roles.add("admin");
+        var user = userDao.findByUserName(userName);
+        if (user != null) {
+            for (var role : user.getRoles()) {
+                roles.add(role.getName());
+            }
+            // System.out.println(user.getRoles().size());
+        }
+
         permissions.add("admin");
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
