@@ -32,10 +32,9 @@ public class CustomRealm extends AuthorizingRealm {
             for (var role : user.getRoles()) {
                 roles.add(role.getName());
             }
-            // System.out.println(user.getRoles().size());
         }
 
-        permissions.add("admin");
+        // permissions.add("admin");
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setStringPermissions(permissions);

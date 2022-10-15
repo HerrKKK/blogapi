@@ -36,7 +36,7 @@ public class AuthenticationTest extends TestBase {
             subject.login(usernamePasswordToken);
             System.out.println("isAuthenticated:" + subject.isAuthenticated());
             subject.checkRoles("admin");
-            subject.checkPermission("admin");
+            // subject.checkPermission("admin");
         } catch (AuthenticationException e) {
             System.out.println("isAuthenticated:" + subject.isAuthenticated());
         }
