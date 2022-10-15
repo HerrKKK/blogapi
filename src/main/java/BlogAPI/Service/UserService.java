@@ -9,10 +9,10 @@ import org.springframework.util.DigestUtils;
 import java.util.UUID;
 
 @Service
-public class SecurityService {
+public class UserService {
     private final UserDao userDao;
     @Autowired
-    public SecurityService(UserDao userDao) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
     public static String generateSalt() {

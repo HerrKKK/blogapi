@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class InitService implements ApplicationRunner {
-    private final SecurityService userService;
+    private final UserService userService;
 
-    public InitService(SecurityService userService) {
+    public InitService(UserService userService) {
         this.userService = userService;
     }
 

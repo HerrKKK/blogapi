@@ -2,7 +2,7 @@ package BlogAPI.common;
 
 import BlogAPI.BlogApiApplication;
 import BlogAPI.Common.shiro.CustomRealm;
-import BlogAPI.Service.SecurityService;
+import BlogAPI.Service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,7 +19,7 @@ public class AuthenticationTest extends TestBase {
     @Autowired
     private CustomRealm customRealm;
     @Autowired
-    private SecurityService securityService;
+    private UserService userService;
 
     @Test
     public void testAuthentication() {
@@ -30,7 +30,7 @@ public class AuthenticationTest extends TestBase {
         SecurityUtils.setSecurityManager(defaultSecurityManager);
         var subject = SecurityUtils.getSubject();
         var usernamePasswordToken = new UsernamePasswordToken("wwr",
-                securityService.calculateUserPwdHash("wwr",
+                userService.calculateUserPwdHash("wwr",
                                                       "153226"));
         try {
             subject.login(usernamePasswordToken);
