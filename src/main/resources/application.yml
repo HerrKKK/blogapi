@@ -14,4 +14,5 @@ spring:
     show-sql: true
   main:
     allow-bean-definition-overriding: true
-
+  custom:
+    file-upload-path: C:\Users\wang.weiran\Documents\code\wwr-blog\upload
