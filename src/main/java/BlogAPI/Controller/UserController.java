@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping(method= RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST)
     @RequiresPermissions("admin")
     public Response addUser(SysUser user) {
         var res = new Response();
@@ -33,7 +33,7 @@ public class UserController {
         return res;
     }
 
-    @RequestMapping(method= RequestMethod.GET)
+    @RequestMapping(method=RequestMethod.GET)
     @RequiresPermissions("admin")
     public Response getUser(SysUser user) {
         var res = new Response();
@@ -48,7 +48,7 @@ public class UserController {
         return res;
     }
 
-    @RequestMapping(method= RequestMethod.PUT)
+    @RequestMapping(method=RequestMethod.PUT)
     @RequiresPermissions("admin")
     public Response updateUser(SysUser user) {
         var res = new Response();
@@ -62,7 +62,7 @@ public class UserController {
 
         return res;
     }
-    @RequestMapping(method= RequestMethod.DELETE)
+    @RequestMapping(method=RequestMethod.DELETE)
     @RequiresPermissions("admin")
     public Response deleteUser(SysUser user) {
         var res = new Response();

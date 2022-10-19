@@ -1,5 +1,6 @@
 package BlogAPI.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"roles"})
 public class SysPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
