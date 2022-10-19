@@ -1,7 +1,6 @@
 package BlogAPI.Common.shiro;
 
 import BlogAPI.Mapper.UserDao;
-import BlogAPI.Service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
