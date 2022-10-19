@@ -21,59 +21,40 @@ public class UserController {
     @RequestMapping(method=RequestMethod.POST)
     @RequiresPermissions("admin")
     public Response addUser(SysUser user) {
-        var res = new Response();
-
         try {
-            res.setObj(userService.addUser(user));
-            res.setStatus("success");
+            return new Response(userService.addUser(user));
         } catch (Exception e) {
-            res.setMessage(e.getMessage());
+            return new Response(e.getMessage());
         }
-
-        return res;
     }
 
     @RequestMapping(method=RequestMethod.GET)
     @RequiresPermissions("admin")
     public Response getUser(SysUser user) {
-        var res = new Response();
-
         try {
-            res.setObj(userService.getUsers(user));
-            res.setStatus("success");
+            return new Response(userService.getUsers(user));
         } catch (Exception e) {
-            res.setMessage(e.getMessage());
+            return new Response(e.getMessage());
         }
-
-        return res;
     }
 
     @RequestMapping(method=RequestMethod.PUT)
     @RequiresPermissions("admin")
     public Response updateUser(SysUser user) {
-        var res = new Response();
-
         try {
-            res.setObj(userService.updateUser(user));
-            res.setStatus("success");
+            return new Response(userService.updateUser(user));
         } catch (Exception e) {
-            res.setMessage(e.getMessage());
+            return new Response(e.getMessage());
         }
-
-        return res;
     }
     @RequestMapping(method=RequestMethod.DELETE)
     @RequiresPermissions("admin")
     public Response deleteUser(SysUser user) {
-        var res = new Response();
-
         try {
             userService.deleteUser(user);
-            res.setStatus("success");
+            return new Response();
         } catch (Exception e) {
-            res.setMessage(e.getMessage());
+            return new Response(e.getMessage());
         }
-
-        return res;
     }
 }
