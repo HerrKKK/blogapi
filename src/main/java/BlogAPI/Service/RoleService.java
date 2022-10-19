@@ -1,5 +1,6 @@
 package BlogAPI.Service;
 
+import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.RoleDao;
 import BlogAPI.Entity.SysRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,7 +33,14 @@ public class RoleService {
         }
         return roleDao.findAll(Example.of(sysRole, matcher));
     }
+    public List<SysUser> getUsersByRole(SysRole sysRole) {
+        var roleList = getRoles(sysRole);
+        if (roleList.size() != 1) {
+            return new ArrayList<>();
+        }
 
+        return new ArrayList<>(roleList.get(0).getUsers());
+    }
     public SysRole updateRole(SysRole sysRole) {
         if (sysRole.getId() == 0) {
             sysRole.setId(roleDao
