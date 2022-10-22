@@ -1,7 +1,6 @@
 package BlogAPI.Service;
 
 import BlogAPI.Entity.SysPermission;
-import BlogAPI.Entity.SysRole;
 import BlogAPI.Mapper.PermissionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;

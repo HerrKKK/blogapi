@@ -2,7 +2,7 @@ package BlogAPI.Controller;
 
 import BlogAPI.Common.Model.Response;
 import BlogAPI.Entity.SysUser;
-import BlogAPI.Service.UserService;
+import BlogAPI.Service.AuthService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value="/auth")
 public class AuthController {
-    private final UserService userService;
+    private final AuthService authService;
     @Autowired
-    AuthController(UserService userService) {
-        this.userService = userService;
+    AuthController(AuthService authService) {
+        this.authService = authService;
     }
     @RequestMapping(method = RequestMethod.POST)
     @RequiresPermissions("admin")
@@ -23,7 +23,7 @@ public class AuthController {
         var res = new Response();
 
         try {
-            userService.login(user);
+            authService.login(user);
             res.setStatus("success");
         } catch (Exception e) {
             res.setMessage(e.getMessage());

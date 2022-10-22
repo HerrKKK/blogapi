@@ -2,6 +2,7 @@ package BlogAPI.common;
 
 import BlogAPI.BlogApiApplication;
 import BlogAPI.Entity.SysUser;
+import BlogAPI.Service.AuthService;
 import BlogAPI.Service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,13 +14,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = BlogApiApplication.class)
 public class AuthenticationTest extends TestBase {
     @Autowired
-    private UserService userService;
+    private AuthService authService;
     @Test
     public void testAuthentication() {
         var user = new SysUser();
         user.setUserName("wwr");
         user.setPwdHash("153226");
-        userService.login(user);
-        userService.logout();
+        authService.login(user);
+        authService.logout();
     }
 }
