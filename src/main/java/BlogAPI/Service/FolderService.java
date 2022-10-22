@@ -3,6 +3,10 @@ package BlogAPI.Service;
 import BlogAPI.Entity.Folder;
 import BlogAPI.Mapper.FolderDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+
+import java.util.List;
 
 public class FolderService {
     final private FolderDao folderDao;
@@ -12,11 +16,34 @@ public class FolderService {
     }
 
     Folder addFolder(Folder folder, Folder parent) {
-        if (parent != null || parent.getId() != 0) {
+        if (parent != null && parent.getId() != 0) {
             parent.getSubFolders().add(folder);
+            folderDao.save(parent);
         }
 
-        folderDao.save(parent);
         return folderDao.save(folder);
+    }
+    List<Folder> findFolder(Folder folder) {
+        var matcher = ExampleMatcher
+                                    .matching()
+                                    .withIgnorePaths("subFolders");
+        if (folder.getId() == 0) {
+            matcher = matcher.withIgnorePaths("id");
+        }
+        return folderDao.findAll(Example.of(folder, matcher));
+    }
+    Folder updateFolder(Folder folder) {
+        if (folder.getId() == 0) {
+            return null;
+        }
+        return folderDao.save(folder);
+    }
+    void deleteFolder(Folder folder) {
+        var folderList = findFolder(folder);
+
+        for (var f : folderList) {
+            folderDao.deleteAll(f.getSubFolders());
+            folderDao.delete(f);
+        }
     }
 }

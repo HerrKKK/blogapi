@@ -18,7 +18,6 @@ public class CustomRealm extends AuthorizingRealm {
     @Autowired
     private UserDao userDao;
 
-
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(
                 PrincipalCollection principalCollection) {
