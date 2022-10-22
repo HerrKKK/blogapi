@@ -4,6 +4,7 @@ import BlogAPI.Common.Util.SecurityUtil;
 import BlogAPI.Common.shiro.CustomRealm;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -11,6 +12,7 @@ import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthService {
     private final UserDao userDao;
@@ -42,8 +44,7 @@ public class AuthService {
                         calculateUserPwdHash(user.getUserName(),
                                              user.getPwdHash()));
             subject.login(usernamePasswordToken);
-            System.out.println("isAuthenticated:"
-                              + subject.isAuthenticated());
+            log.info("isAuthenticated:" + subject.isAuthenticated());
         } catch (AuthenticationException e) {
             throw e;
         }
@@ -52,8 +53,7 @@ public class AuthService {
         try {
             var subject = SecurityUtils.getSubject();
             subject.logout();
-            System.out.println("isAuthenticated:"
-                              + subject.isAuthenticated());
+            log.info("isAuthenticated:" + subject.isAuthenticated());
         } catch (AuthenticationException e) {
             throw e;
         }

@@ -3,11 +3,13 @@ package BlogAPI.Service;
 import BlogAPI.Entity.SysRole;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class InitService implements ApplicationRunner {
     @Value("${spring.custom.admin-username}")
@@ -29,7 +31,6 @@ public class InitService implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        System.out.println("boot up");
         addAdmin();
     }
     public void addAdmin() {
@@ -44,12 +45,12 @@ public class InitService implements ApplicationRunner {
         try {
             admin.getRoles().add(roleService.addRole(role));
         } catch (Exception e) {
-            System.out.println("admin role existed");
+            log.info("admin role existed");
         }
         try {
             userDao.save(admin);
         } catch (Exception e) {
-            System.out.println("admin existed");
+            log.info("admin existed");
         }
     }
 }

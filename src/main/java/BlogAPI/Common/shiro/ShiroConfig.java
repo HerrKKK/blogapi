@@ -1,5 +1,6 @@
 package BlogAPI.Common.shiro;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -13,11 +14,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
+@Slf4j
 @Configuration
 public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        System.out.println("ShiroConfiguration.shiroFilter()");
+        log.info("ShiroConfiguration.shiroFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         var filterChainDefinitionMap = new LinkedHashMap<String, String>();
