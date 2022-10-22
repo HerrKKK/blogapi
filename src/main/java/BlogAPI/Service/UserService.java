@@ -79,7 +79,7 @@ public class UserService {
         user.setPwdHash(encrypt(user.getPwdHash(), user.getSalt()));
         return userDao.save(user);
     }
-    public List<SysUser> getUsers(SysUser user) {
+    public List<SysUser> findUsers(SysUser user) {
         var matcher = ExampleMatcher.matching();
         if (user.getId() == 0) {
             matcher = matcher.withIgnorePaths("id");
@@ -89,7 +89,7 @@ public class UserService {
         }
         return userDao.findAll(Example.of(user, matcher));
     }
-    public SysUser updateUser(SysUser user) {
+    public SysUser modifyUser(SysUser user) {
         if (user.getId() == 0) {
             user.setId(userDao
                       .findByUserNameOrEmail(user.getUserName(),
@@ -98,7 +98,7 @@ public class UserService {
         }
         return userDao.save(user);
     }
-    public void deleteUser(SysUser user) {
+    public void removeUser(SysUser user) {
         userDao.delete(userDao
                       .findByIdOrUserNameOrEmail(user.getId(),
                                                  user.getUserName(),

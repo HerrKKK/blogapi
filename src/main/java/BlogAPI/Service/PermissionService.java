@@ -15,20 +15,20 @@ public class PermissionService {
         this.permissionDao = permissionDao;
     }
 
-    public SysPermission newPermission(SysPermission permission) {
+    public SysPermission addPermission(SysPermission permission) {
         return permissionDao.save(permission);
     }
 
-    public List<SysPermission> getPermissions(SysPermission permission) {
+    public List<SysPermission> findPermissions(SysPermission permission) {
         return permissionDao.findAll(Example.of(permission));
     }
 
-    public SysPermission updatePermission(SysPermission permission) {
+    public SysPermission modifyPermission(SysPermission permission) {
         return permissionDao.save(permissionDao
                             .findAll(Example.of(permission))
                             .get(0));
     }
-    public void deletePermission(SysPermission permission) {
+    public void removePermission(SysPermission permission) {
         permissionDao.delete(permissionDao
                      .findAll(Example.of(permission))
                      .get(0));

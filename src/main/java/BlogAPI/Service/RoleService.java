@@ -19,11 +19,11 @@ public class RoleService {
         this.roleDao = roleDao;
     }
 
-    public SysRole newRole(SysRole sysRole) {
+    public SysRole addRole(SysRole sysRole) {
         return roleDao.save(sysRole);
     }
 
-    public List<SysRole> getRoles(SysRole sysRole) {
+    public List<SysRole> findRoles(SysRole sysRole) {
         var matcher = ExampleMatcher.matching();
         if (sysRole.getId() == 0) {
             matcher = matcher.withIgnorePaths("id");
@@ -33,15 +33,15 @@ public class RoleService {
         }
         return roleDao.findAll(Example.of(sysRole, matcher));
     }
-    public List<SysUser> getUsersByRole(SysRole sysRole) {
-        var roleList = getRoles(sysRole);
+    public List<SysUser> findUsersByRole(SysRole sysRole) {
+        var roleList = findRoles(sysRole);
         if (roleList.size() != 1) {
             return new ArrayList<>();
         }
 
         return new ArrayList<>(roleList.get(0).getUsers());
     }
-    public SysRole updateRole(SysRole sysRole) {
+    public SysRole modifyRole(SysRole sysRole) {
         if (sysRole.getId() == 0) {
             sysRole.setId(roleDao
                          .findAll(Example.of(sysRole))
@@ -50,7 +50,7 @@ public class RoleService {
         }
         return roleDao.save(sysRole);
     }
-    public void deleteRole(SysRole sysRole) {
+    public void removeRole(SysRole sysRole) {
         roleDao.delete(roleDao
                .findAll(Example.of(sysRole))
                .get(0));

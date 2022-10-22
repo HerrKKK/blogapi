@@ -32,7 +32,7 @@ public class UserController {
     @RequiresPermissions("admin")
     public Response getUser(SysUser user) {
         try {
-            return new Response(userService.getUsers(user));
+            return new Response(userService.findUsers(user));
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
@@ -42,7 +42,7 @@ public class UserController {
     @RequiresPermissions("admin")
     public Response updateUser(SysUser user) {
         try {
-            return new Response(userService.updateUser(user));
+            return new Response(userService.modifyUser(user));
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
@@ -51,7 +51,7 @@ public class UserController {
     @RequiresPermissions("admin")
     public Response deleteUser(SysUser user) {
         try {
-            userService.deleteUser(user);
+            userService.removeUser(user);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());

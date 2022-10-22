@@ -32,13 +32,13 @@ public class FolderService {
         }
         return folderDao.findAll(Example.of(folder, matcher));
     }
-    Folder updateFolder(Folder folder) {
+    Folder modifyFolder(Folder folder) {
         if (folder.getId() == 0) {
             return null;
         }
         return folderDao.save(folder);
     }
-    void deleteFolder(Folder folder) {
+    void removeFolder(Folder folder) {
         var folderList = findFolder(folder);
 
         for (var f : folderList) {

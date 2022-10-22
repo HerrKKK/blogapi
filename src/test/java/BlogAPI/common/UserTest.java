@@ -26,7 +26,7 @@ public class UserTest {
         System.out.println(user.getRoles());
 
         user.setUserName("wwr");
-        var list = userService.getUsers(user);
+        var list = userService.findUsers(user);
         System.out.println(list.size());
     }
 }
