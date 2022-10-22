@@ -16,3 +16,7 @@ spring:
     allow-bean-definition-overriding: true
   custom:
     file-upload-path: C:\Users\wang.weiran\Documents\code\wwr-blog\upload
+    admin-username: wwr
+    admin-password-hash: 82c9d6ef5c099fbc6e6094d4cf4c1771
+    admin-password-salt: d2e37e3c92f651a6a554088573427b76
+    admin-email: iswangwr@gmail.com

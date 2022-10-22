@@ -2,17 +2,28 @@ package BlogAPI.Service;
 
 import BlogAPI.Entity.SysRole;
 import BlogAPI.Entity.SysUser;
+import BlogAPI.Mapper.UserDao;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
 
 @Service
 public class InitService implements ApplicationRunner {
-    private final UserService userService;
+    @Value("${spring.custom.admin-username}")
+    private String adminUsername;
+    @Value("${spring.custom.admin-password-hash}")
+    private String adminPwdHash;
+    @Value("${spring.custom.admin-password-salt}")
+    private String adminSalt;
+    @Value("${spring.custom.admin-email}")
+    private String adminEmail;
+
+    private final UserDao userDao;
     private final RoleService roleService;
-    public InitService(UserService userService,
+    public InitService(UserDao userDao,
                        RoleService roleService) {
-        this.userService = userService;
+        this.userDao = userDao;
         this.roleService = roleService;
     }
 
@@ -23,9 +34,10 @@ public class InitService implements ApplicationRunner {
     }
     public void addAdmin() {
         var admin = new SysUser();
-        admin.setUserName("wwr");
-        admin.setEmail("iswangwr@gmail.com");
-        admin.setPwdHash("153226");
+        admin.setUserName(adminUsername);
+        admin.setEmail(adminEmail);
+        admin.setPwdHash(adminPwdHash);
+        admin.setSalt(adminSalt);
         var role = new SysRole();
         role.setName("admin");
 
@@ -35,7 +47,7 @@ public class InitService implements ApplicationRunner {
             System.out.println("admin role existed");
         }
         try {
-            userService.addUser(admin);
+            userDao.save(admin);
         } catch (Exception e) {
             System.out.println("admin existed");
         }
