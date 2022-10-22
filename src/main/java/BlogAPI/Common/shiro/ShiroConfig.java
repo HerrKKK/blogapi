@@ -20,7 +20,7 @@ public class ShiroConfig {
         System.out.println("ShiroConfiguration.shiroFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        var filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // 配置不会被拦截的链接 顺序判断
 //        filterChainDefinitionMap.put("/static/**", "anon");
         // 配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
@@ -37,7 +37,6 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
-
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         var hashedCredentialsMatcher = new HashedCredentialsMatcher();
@@ -45,29 +44,26 @@ public class ShiroConfig {
         hashedCredentialsMatcher.setHashIterations(2);
         return hashedCredentialsMatcher;
     }
-
     @Bean
     public CustomRealm CustomRealm() {
         var customRealm = new CustomRealm();
         // customRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return customRealm;
     }
-
     @Bean
     public SecurityManager securityManager() {
         var securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(CustomRealm());
         return securityManager;
     }
-
     @Bean
     public AuthorizationAttributeSourceAdvisor
     authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        var authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        var authorizationAttributeSourceAdvisor =
+                new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
-
     @Bean(name = "simpleMappingExceptionResolver")
     public SimpleMappingExceptionResolver
     createSimpleMappingExceptionResolver() {

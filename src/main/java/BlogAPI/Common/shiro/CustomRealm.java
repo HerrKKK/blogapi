@@ -12,7 +12,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public class CustomRealm extends AuthorizingRealm {
     @Autowired
@@ -20,10 +19,10 @@ public class CustomRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(
-                PrincipalCollection principalCollection) {
+                            PrincipalCollection principalCollection) {
         String userName = (String) principalCollection.getPrimaryPrincipal();
-        Set<String> roles = new HashSet<>();
-        Set<String> permissions = new HashSet<>();
+        var roles = new HashSet<String>();
+        var permissions = new HashSet<String>();
 
         var user = userDao.findByUserName(userName);
         if (user != null) {
@@ -37,16 +36,15 @@ public class CustomRealm extends AuthorizingRealm {
 
         // permissions.add("admin");
 
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        var simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setStringPermissions(permissions);
         simpleAuthorizationInfo.setRoles(roles);
         return simpleAuthorizationInfo;
     }
-
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(
-                        AuthenticationToken authenticationToken)
-                                             throws AuthenticationException {
+                                 AuthenticationToken authenticationToken)
+                                        throws AuthenticationException {
         String userName = (String) authenticationToken.getPrincipal();
         var sysUser = userDao.findByUserName(userName);
         if (null == sysUser) {

@@ -37,11 +37,13 @@ public class AuthService {
 
             SecurityUtils.setSecurityManager(defaultSecurityManager);
             var subject = SecurityUtils.getSubject();
-            var usernamePasswordToken = new UsernamePasswordToken(user.getUserName(),
-                    calculateUserPwdHash(user.getUserName(),
-                            user.getPwdHash()));
+            var usernamePasswordToken =
+                new UsernamePasswordToken(user.getUserName(),
+                        calculateUserPwdHash(user.getUserName(),
+                                             user.getPwdHash()));
             subject.login(usernamePasswordToken);
-            System.out.println("isAuthenticated:" + subject.isAuthenticated());
+            System.out.println("isAuthenticated:"
+                              + subject.isAuthenticated());
         } catch (AuthenticationException e) {
             throw e;
         }
@@ -50,7 +52,8 @@ public class AuthService {
         try {
             var subject = SecurityUtils.getSubject();
             subject.logout();
-            System.out.println("isAuthenticated:" + subject.isAuthenticated());
+            System.out.println("isAuthenticated:"
+                              + subject.isAuthenticated());
         } catch (AuthenticationException e) {
             throw e;
         }

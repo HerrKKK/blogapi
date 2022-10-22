@@ -7,13 +7,15 @@ import java.util.UUID;
 public class SecurityUtil {
     public static String generateSalt() {
         return DigestUtils
-                .md5DigestAsHex(UUID.randomUUID()
-                        .toString()
-                        .replaceAll("-", "")
-                        .getBytes());
+              .md5DigestAsHex(UUID.randomUUID()
+                             .toString()
+                             .replaceAll("-", "")
+                             .getBytes());
     }
     public static String encrypt(String password, String salt) {
-        password = DigestUtils.md5DigestAsHex(password.getBytes());
-        return DigestUtils.md5DigestAsHex((password + salt).getBytes());
+        return DigestUtils
+              .md5DigestAsHex((DigestUtils
+                              .md5DigestAsHex(password.getBytes())
+                             + salt).getBytes());
     }
 }
