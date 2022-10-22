@@ -5,9 +5,11 @@ import BlogAPI.Mapper.FolderDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class FolderService {
     final private FolderDao folderDao;
     @Autowired

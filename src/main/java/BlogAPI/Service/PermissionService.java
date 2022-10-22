@@ -4,9 +4,11 @@ import BlogAPI.Entity.SysPermission;
 import BlogAPI.Mapper.PermissionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PermissionService {
     private final PermissionDao permissionDao;
     @Autowired
