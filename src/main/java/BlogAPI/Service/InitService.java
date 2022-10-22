@@ -15,6 +15,7 @@ public class InitService implements ApplicationRunner {
         this.userService = userService;
         this.roleService = roleService;
     }
+
     @Override
     public void run(ApplicationArguments args) {
         System.out.println("boot up");

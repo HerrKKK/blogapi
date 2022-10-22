@@ -22,7 +22,6 @@ public class RoleService {
     public SysRole addRole(SysRole sysRole) {
         return roleDao.save(sysRole);
     }
-
     public List<SysRole> findRoles(SysRole sysRole) {
         var matcher = ExampleMatcher.matching();
         if (sysRole.getId() == 0) {

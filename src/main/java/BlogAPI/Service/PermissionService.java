@@ -17,11 +17,9 @@ public class PermissionService {
     public SysPermission addPermission(SysPermission permission) {
         return permissionDao.save(permission);
     }
-
     public List<SysPermission> findPermissions(SysPermission permission) {
         return permissionDao.findAll(Example.of(permission));
     }
-
     public SysPermission modifyPermission(SysPermission permission) {
         return permissionDao.save(permissionDao
                             .findAll(Example.of(permission))

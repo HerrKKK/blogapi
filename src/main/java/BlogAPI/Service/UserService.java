@@ -15,12 +15,9 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserDao userDao;
-    private final CustomRealm customRealm;
     @Autowired
-    public UserService(UserDao userDao,
-                       CustomRealm customRealm) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
-        this.customRealm = customRealm;
     }
 
     public SysUser addUser(SysUser user) {

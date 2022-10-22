@@ -16,8 +16,8 @@ import java.util.Properties;
 @Configuration
 public class ShiroConfig {
     @Bean
-    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
-        System.out.println("ShiroConfiguration.shirFilter()");
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+        System.out.println("ShiroConfiguration.shiroFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();

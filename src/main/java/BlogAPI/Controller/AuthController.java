@@ -17,6 +17,7 @@ public class AuthController {
     AuthController(AuthService authService) {
         this.authService = authService;
     }
+
     @RequestMapping(method = RequestMethod.POST)
     @RequiresPermissions("admin")
     public Response login(SysUser user) {
