@@ -4,7 +4,6 @@ import BlogAPI.Common.Model.Response;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Service.AuthService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,18 +22,11 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Response login(@RequestBody SysUser user) {
-        var res = new Response();
-        log.info(user.getUserName());
-        log.info(user.getPwdHash());
-
         try {
             authService.login(user);
-            res.setStatus("success");
+            return new Response();
         } catch (Exception e) {
-            res.setStatus("failure");
-            res.setMessage(e.getMessage());
+            return new Response(e.getMessage());
         }
-
-        return res;
     }
 }
