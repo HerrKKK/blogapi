@@ -26,14 +26,11 @@ public class ShiroConfig {
         var shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        Map<String, Filter> filterMap = new HashMap<>();
-        //这个地方其实另外两个filter可以不设置，默认就是
+        var filterMap = new HashMap<String, Filter>();
         filterMap.put("anon", new AnonymousFilter());
         filterMap.put("jwt", new JwtFilter());
         filterMap.put("logout", new LogoutFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
-
-
 
         var filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/static/**", "anon");
