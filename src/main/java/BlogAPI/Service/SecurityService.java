@@ -1,4 +1,4 @@
-package BlogAPI.Common.Util;
+package BlogAPI.Service;
 
 import BlogAPI.Entity.SysUser;
 import com.auth0.jwt.JWT;
@@ -13,7 +13,7 @@ import org.apache.commons.codec.binary.Base64;
 import java.util.*;
 
 @Service
-public class JwtUtil {
+public class SecurityService {
     @Value("${spring.custom.jwt-key}")
     private String SecretKey;
     private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -24,7 +24,7 @@ public class JwtUtil {
         base64EncodedKey = Base64.encodeBase64String(SecretKey.getBytes());
     }
 
-    public String encode(long ttlMillis, SysUser sysUser) {
+    public String encodeJWT(long ttlMillis, SysUser sysUser) {
 
         var claims = new HashMap<String, Object>();
         if (sysUser != null) {
@@ -52,14 +52,14 @@ public class JwtUtil {
 
         return builder.compact();
     }
-    public Claims decode(String jwtToken) {
+    public Claims decodeJWT(String jwtToken) {
         return Jwts.parser()
                    .setSigningKey(base64EncodedKey)
                    .parseClaimsJws(jwtToken)
                    .getBody();
     }
 
-    public boolean verify(String jwtToken) {
+    public boolean verifyJWT(String jwtToken) {
         JWTVerifier verifier =
                 JWT.require(Algorithm
                            .HMAC256(Base64
@@ -68,24 +68,5 @@ public class JwtUtil {
         verifier.verify(jwtToken); // throw
         return true;
     }
-
-    /*
-    public static void main(String[] args) {
-        JwtUtil util = new JwtUtil("tom", SignatureAlgorithm.HS256);
-
-        // Base64.decodeBase64(byte[])
-        Map<String, Object> map = new HashMap<>();
-        map.put("username", "tom");
-        map.put("password", "123456");
-        map.put("age", 20);
-
-        String jwtToken = util.encode(30000, map);
-        util.isVerify(jwtToken);
-        System.out.println("&#x5408;&#x6CD5;");
-
-        util.decode(jwtToken).entrySet().forEach((entry) -> {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        });
-    }*/
 }
 
