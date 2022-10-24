@@ -20,8 +20,17 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.PUT)
     public Response login(@RequestBody SysUser user) {
+        try {
+            authService.login(user);
+            return new Response();
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
+    @RequestMapping(method = RequestMethod.DELETE)
+    public Response logout(@RequestBody SysUser user) {
         try {
             authService.login(user);
             return new Response();
