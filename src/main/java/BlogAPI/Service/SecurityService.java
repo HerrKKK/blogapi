@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.util.DigestUtils;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class SecurityService {
     @Value("${spring.custom.jwt-key}")
@@ -26,13 +28,19 @@ public class SecurityService {
     }
 
     public String encodeJWT(long ttlMillis, SysUser sysUser) {
+        if (sysUser == null) {
+            return "";
+        }
 
         var claims = new HashMap<String, Object>();
-        if (sysUser != null) {
-            claims.put("id", sysUser.getId());
-            claims.put("userName", sysUser.getUserName());
-            claims.put("roles", sysUser.getRoles());
+
+        claims.put("id", sysUser.getId());
+        claims.put("userName", sysUser.getUserName());
+        var roleNames = new ArrayList<String>();
+        for (var role : sysUser.getRoles()) {
+            roleNames.add(role.getName());
         }
+        claims.put("roles", roleNames);
 
         long nowMillis = System.currentTimeMillis();
         var now = new Date(nowMillis);
