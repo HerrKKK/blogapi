@@ -4,6 +4,7 @@ import BlogAPI.Common.Model.Response;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    @RequiresPermissions("admin")
+    @RequiresRoles("admin")
     public Response addUser(@RequestBody SysUser user) {
         try {
             return new Response(userService.addUser(user));
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    @RequiresPermissions("admin")
+    @RequiresRoles("admin")
     public Response getUser(@RequestBody SysUser user) {
         try {
             return new Response(userService.findUsers(user));
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @RequestMapping(method=RequestMethod.PUT)
-    @RequiresPermissions("admin")
+    @RequiresRoles("admin")
     public Response updateUser(@RequestBody SysUser user) {
         try {
             return new Response(userService.modifyUser(user));
@@ -49,7 +50,7 @@ public class UserController {
         }
     }
     @RequestMapping(method=RequestMethod.DELETE)
-    @RequiresPermissions("admin")
+    @RequiresRoles("admin")
     public Response deleteUser(@RequestBody SysUser user) {
         try {
             userService.removeUser(user);
