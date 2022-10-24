@@ -31,30 +31,22 @@ public class AuthService {
             return "";
         }
     }
-    public void login(SysUser user) {
-        try {
-            var defaultSecurityManager = new DefaultSecurityManager();
-            defaultSecurityManager.setRealm(customRealm);
+    public void login(SysUser user) throws AuthenticationException {
+        var defaultSecurityManager = new DefaultSecurityManager();
+        defaultSecurityManager.setRealm(customRealm);
 
-            SecurityUtils.setSecurityManager(defaultSecurityManager);
-            var subject = SecurityUtils.getSubject();
-            var usernamePasswordToken =
-                new UsernamePasswordToken(user.getUserName(),
-                        calculateUserPwdHash(user.getUserName(),
-                                             user.getPwdHash()));
-            subject.login(usernamePasswordToken);
-            log.info("isAuthenticated:" + subject.isAuthenticated());
-        } catch (AuthenticationException e) {
-            throw e;
-        }
+        SecurityUtils.setSecurityManager(defaultSecurityManager);
+        var subject = SecurityUtils.getSubject();
+        var usernamePasswordToken =
+            new UsernamePasswordToken(user.getUserName(),
+                    calculateUserPwdHash(user.getUserName(),
+                                         user.getPwdHash()));
+        subject.login(usernamePasswordToken);
+        log.info("isAuthenticated:" + subject.isAuthenticated());
     }
-    public void logout() {
-        try {
-            var subject = SecurityUtils.getSubject();
-            subject.logout();
-            log.info("isAuthenticated:" + subject.isAuthenticated());
-        } catch (AuthenticationException e) {
-            throw e;
-        }
+    public void logout() throws AuthenticationException {
+        var subject = SecurityUtils.getSubject();
+        subject.logout();
+        log.info("isAuthenticated:" + subject.isAuthenticated());
     }
 }

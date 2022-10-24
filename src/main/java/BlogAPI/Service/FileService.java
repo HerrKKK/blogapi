@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -21,7 +22,7 @@ public class FileService {
         try {
             if (dirPath.exists() || dirPath.mkdirs()) {
                 uploadFile.transferTo(new File(folderPath,
-                        uploadFile.getOriginalFilename()));
+                        Objects.requireNonNull(uploadFile.getOriginalFilename())));
             }
         } catch (IOException e) {
             log.error(e.getMessage());
