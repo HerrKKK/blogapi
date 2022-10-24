@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -39,6 +41,8 @@ public class JwtTest extends TestBase {
         var t = securityService.decodeJWT(token);
         log.info(t.get("id").toString());
         log.info((String)t.get("userName"));
-        log.info(String.valueOf(t.get("roles")));
+        for (var role : (List<Map<String,Object>>) t.get("roles")) {
+            log.info((String) role.get("name"));
+        }
     }
 }
