@@ -5,11 +5,15 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.AnonymousFilter;
+import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -19,17 +23,26 @@ import java.util.Properties;
 public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        var shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+
+        Map<String, Filter> filterMap = new HashMap<>();
+        //这个地方其实另外两个filter可以不设置，默认就是
+        filterMap.put("anon", new AnonymousFilter());
+        filterMap.put("jwt", new JwtFilter());
+        filterMap.put("logout", new LogoutFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
+
+
+
         var filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
-         filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "authc");
         // filterChainDefinitionMap.put("/**", "anon");
+
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
-
-        // unauthorized;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
@@ -43,9 +56,12 @@ public class ShiroConfig {
     }
     @Bean
     public CustomRealm CustomRealm() {
-        var customRealm = new CustomRealm();
         // customRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return customRealm;
+        return new CustomRealm();
+    }
+    @Bean
+    public JwtRealm JwtRealm() {
+        return new JwtRealm();
     }
     @Bean
     public SecurityManager securityManager() {
