@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.util.DigestUtils;
 
 import java.util.*;
 
@@ -59,14 +60,26 @@ public class SecurityService {
                    .getBody();
     }
 
-    public boolean verifyJWT(String jwtToken) {
+    public void verifyJWT(String jwtToken) {
         JWTVerifier verifier =
                 JWT.require(Algorithm
                            .HMAC256(Base64
                                    .decodeBase64(base64EncodedKey)))
                            .build();
         verifier.verify(jwtToken); // throw
-        return true;
+    }
+    public static String generateSalt() {
+        return DigestUtils
+                .md5DigestAsHex(UUID.randomUUID()
+                        .toString()
+                        .replaceAll("-", "")
+                        .getBytes());
+    }
+    public static String encrypt(String password, String salt) {
+        return DigestUtils
+                .md5DigestAsHex((DigestUtils
+                        .md5DigestAsHex(password.getBytes())
+                        + salt).getBytes());
     }
 }
 

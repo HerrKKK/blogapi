@@ -1,6 +1,5 @@
 package BlogAPI.Service;
 
-import BlogAPI.Common.Util.SecurityUtil;
 import BlogAPI.Entity.SysRole;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
@@ -20,8 +19,8 @@ public class UserService {
     }
 
     public SysUser addUser(SysUser user) {
-        user.setSalt(SecurityUtil.generateSalt());
-        user.setPwdHash(SecurityUtil.encrypt(user.getPwdHash(),
+        user.setSalt(SecurityService.generateSalt());
+        user.setPwdHash(SecurityService.encrypt(user.getPwdHash(),
                                              user.getSalt()));
         return userDao.save(user);
     }
