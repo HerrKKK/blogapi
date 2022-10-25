@@ -36,7 +36,11 @@ public class SecurityService {
 
         claims.put("id", sysUser.getId());
         claims.put("userName", sysUser.getUserName());
-        claims.put("roles", sysUser.getRoles()); // List<Map<String,String>>
+        var roleNames = new ArrayList<String>();
+        for (var role : sysUser.getRoles()) {
+            roleNames.add(role.getName());
+        }
+        claims.put("roles", roleNames);
 
         long nowMillis = System.currentTimeMillis();
         var now = new Date(nowMillis);
