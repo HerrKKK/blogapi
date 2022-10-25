@@ -5,15 +5,11 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.filter.authc.AnonymousFilter;
-import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
-import javax.servlet.Filter;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,23 +19,17 @@ import java.util.Properties;
 public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        var shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-
-        var filterMap = new HashMap<String, Filter>();
-        filterMap.put("anon", new AnonymousFilter());
-        filterMap.put("jwt", new JwtFilter());
-        filterMap.put("logout", new LogoutFilter());
-        shiroFilterFactoryBean.setFilters(filterMap);
-
         var filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
-        filterChainDefinitionMap.put("/**", "authc");
+         filterChainDefinitionMap.put("/**", "authc");
         // filterChainDefinitionMap.put("/**", "anon");
-
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
+
+        // unauthorized;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
@@ -53,12 +43,9 @@ public class ShiroConfig {
     }
     @Bean
     public CustomRealm CustomRealm() {
+        var customRealm = new CustomRealm();
         // customRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return new CustomRealm();
-    }
-    @Bean
-    public JwtRealm JwtRealm() {
-        return new JwtRealm();
+        return customRealm;
     }
     @Bean
     public SecurityManager securityManager() {

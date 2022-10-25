@@ -25,7 +25,6 @@ public class JwtTest extends TestBase {
     @Autowired
     private UserService userService;
     @Test
-    @SuppressWarnings("unchecked")
     public void testJwt() {
         var user = new SysUser();
         user.setUserName("wwr");
