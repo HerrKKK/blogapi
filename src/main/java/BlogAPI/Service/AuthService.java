@@ -1,5 +1,6 @@
 package BlogAPI.Service;
 
+import BlogAPI.Common.Util.SecurityUtil;
 import BlogAPI.Common.shiro.CustomRealm;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
@@ -25,7 +26,7 @@ public class AuthService {
 
     public String calculateUserPwdHash(String userName, String password) {
         try {
-            return SecurityService.encrypt(password,
+            return SecurityUtil.encrypt(password,
                     userDao.findByUserName(userName).getSalt());
         } catch (Exception e) {
             return "";
