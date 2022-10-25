@@ -3,6 +3,7 @@ server:
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/BlogDB?characterEncoding=utf-8&useSSL=false&useTimezone=true
+    # type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: 153226
     driver-class-name: org.mariadb.jdbc.Driver
@@ -19,4 +20,3 @@ spring:
     admin-password-hash: 82c9d6ef5c099fbc6e6094d4cf4c1771
     admin-password-salt: d2e37e3c92f651a6a554088573427b76
     admin-email: iswangwr@gmail.com
-    jwt-key: test-key
