@@ -1,7 +1,7 @@
 package BlogAPI.common;
 
 import BlogAPI.BlogApiApplication;
-import BlogAPI.Service.SecurityService;
+import BlogAPI.Common.Util.JwtUtil;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Service.UserService;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = BlogApiApplication.class)
 public class JwtTest extends TestBase {
     @Autowired
-    private SecurityService util;
+    private JwtUtil util;
     @Autowired
     private UserService userService;
     @Test
@@ -23,9 +23,9 @@ public class JwtTest extends TestBase {
         user.setUserName("wwr");
         user = userService.findUsers(user).get(0);
         String token =
-                util.encodeJWT((long)1000*60*60*24*30, user);
-        util.verifyJWT(token);
-        util.decodeJWT(token).entrySet().forEach((entry) -> {
+                util.encode((long)1000*60*60*24*30, user);
+        util.verify(token);
+        util.decode(token).entrySet().forEach((entry) -> {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         });
     }
