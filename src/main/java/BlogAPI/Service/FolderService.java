@@ -23,18 +23,22 @@ public class FolderService {
                 new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
     }
     @Value("${spring.custom.file-upload-path}")
+    private String rootPath;
 
     public Folder addFolder(Folder folder) {
-        // url format: '/xxxx/xxx/'
+        // url format: '/xxxx/xxx'
         var parent = folder.getParent();
 
-        var url = new StringBuilder(folder.getTitle())
-                                  .append('/');
-        folder.setUrl(folder.getTitle());
+        var url = new StringBuilder();
         if (parent != null) {
             url.insert(0, parent.getUrl());
+        } else {
+            url.insert(0, rootPath);
         }
-        folder.setUrl(url.toString());
+
+        folder.setUrl(url.append('/')
+                         .append(folder.getTitle())
+                         .toString());
         folder.setCreatedTime(simpleDateFormat.format(new Date()));
 
         // test if url is unique first
