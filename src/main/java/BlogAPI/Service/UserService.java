@@ -45,19 +45,14 @@ public class UserService {
                     .findFirst()
                     .orElse(null);
         }
-        if (user == null) {
-            return null;
-        }
         return userDao.save(user);
     }
     public void removeUser(SysUser user) {
-        user = user = findUsers(user)
+        user = findUsers(user)
                 .stream()
                 .findFirst()
                 .orElse(null);
-        if (user != null) {
-            userDao.delete(user);
-        }
+        userDao.delete(user);
     }
     public void addRoleToUser(SysUser user, SysRole role) {
         user.getRoles().add(role);
