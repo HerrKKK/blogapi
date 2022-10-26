@@ -8,7 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao extends JpaRepository<SysUser, Long>,
                                  JpaSpecificationExecutor<SysUser> {
-    SysUser findByUserName(String userName);
-    SysUser findByIdOrUserNameOrEmail(Long id, String userName, String email);
-    SysUser findByUserNameOrEmail(String userName, String email);
 }

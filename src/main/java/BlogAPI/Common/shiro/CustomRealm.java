@@ -1,6 +1,8 @@
 package BlogAPI.Common.shiro;
 
+import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
+import BlogAPI.Service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -16,6 +18,8 @@ import java.util.HashSet;
 public class CustomRealm extends AuthorizingRealm {
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private UserService userService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(
@@ -24,7 +28,12 @@ public class CustomRealm extends AuthorizingRealm {
         var roles = new HashSet<String>();
         var permissions = new HashSet<String>();
 
-        var user = userDao.findByUserName(userName);
+        var user = userService
+                .findUsers(new SysUser()
+                        .setUserName(userName))
+                .stream()
+                .findFirst()
+                .orElse(null);
         if (user != null) {
             for (var role : user.getRoles()) {
                 roles.add(role.getName());
@@ -46,7 +55,12 @@ public class CustomRealm extends AuthorizingRealm {
                                  AuthenticationToken authenticationToken)
                                         throws AuthenticationException {
         String userName = (String) authenticationToken.getPrincipal();
-        var sysUser = userDao.findByUserName(userName);
+        var sysUser = userService
+                    .findUsers(new SysUser()
+                            .setUserName(userName))
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
         if (null == sysUser) {
             return null;
         }

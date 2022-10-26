@@ -26,7 +26,10 @@ public class UserService {
         return userDao.save(user);
     }
     public List<SysUser> findUsers(SysUser user) {
-        var matcher = ExampleMatcher.matching();
+        var matcher = ExampleMatcher
+                .matching()
+                .withIgnorePaths("pwdHash")
+                .withIgnorePaths("salt");
         if (user.getId() == 0) {
             matcher = matcher.withIgnorePaths("id");
         }
@@ -37,18 +40,24 @@ public class UserService {
     }
     public SysUser modifyUser(SysUser user) {
         if (user.getId() == 0) {
-            user.setId(userDao
-                      .findByUserNameOrEmail(user.getUserName(),
-                                             user.getEmail())
-                      .getId());
+            user = findUsers(user)
+                    .stream()
+                    .findFirst()
+                    .orElse(null);
+        }
+        if (user == null) {
+            return null;
         }
         return userDao.save(user);
     }
     public void removeUser(SysUser user) {
-        userDao.delete(userDao
-                      .findByIdOrUserNameOrEmail(user.getId(),
-                                                 user.getUserName(),
-                                                 user.getEmail()));
+        user = user = findUsers(user)
+                .stream()
+                .findFirst()
+                .orElse(null);
+        if (user != null) {
+            userDao.delete(user);
+        }
     }
     public void addRoleToUser(SysUser user, SysRole role) {
         user.getRoles().add(role);

@@ -3,7 +3,6 @@ package BlogAPI.Service;
 import BlogAPI.Common.Util.SecurityUtil;
 import BlogAPI.Common.shiro.CustomRealm;
 import BlogAPI.Entity.SysUser;
-import BlogAPI.Mapper.UserDao;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -15,24 +14,24 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class AuthService {
-    private final UserDao userDao;
+    private final UserService userService;
     private final CustomRealm customRealm;
     @Autowired
-    public AuthService(UserDao userDao,
+    public AuthService(UserService userService,
                        CustomRealm customRealm) {
-        this.userDao = userDao;
+        this.userService = userService;
         this.customRealm = customRealm;
     }
 
-    public String calculateUserPwdHash(String userName, String password) {
-        try {
-            return SecurityUtil.encrypt(password,
-                    userDao.findByUserName(userName).getSalt());
-        } catch (Exception e) {
-            return "";
-        }
-    }
     public void login(SysUser user) throws AuthenticationException {
+        user = userService.findUsers(user)
+                          .stream()
+                          .findFirst()
+                          .orElse(null);
+        if (user == null) {
+            throw new AuthenticationException("no such user");
+        }
+
         var defaultSecurityManager = new DefaultSecurityManager();
         defaultSecurityManager.setRealm(customRealm);
 
@@ -40,8 +39,8 @@ public class AuthService {
         var subject = SecurityUtils.getSubject();
         var usernamePasswordToken =
             new UsernamePasswordToken(user.getUserName(),
-                    calculateUserPwdHash(user.getUserName(),
-                                         user.getPwdHash()));
+                        SecurityUtil.encrypt(user.getPwdHash(),
+                                             user.getSalt()));
         subject.login(usernamePasswordToken);
         log.info("isAuthenticated:" + subject.isAuthenticated());
     }
