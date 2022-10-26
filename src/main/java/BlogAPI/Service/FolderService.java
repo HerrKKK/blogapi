@@ -32,9 +32,9 @@ public class FolderService {
                        .findFirst()
                        .orElse(null);
         if (parent == null) {
-            var pattern = new Folder();
-            pattern.setUrl(""); // root folder
-            parent = findFolders(pattern).get(0);
+            parent = findFolders(new Folder()
+                        .setUrl(""))
+                        .get(0);// root folder
         }
 
         folder.setParent(parent);

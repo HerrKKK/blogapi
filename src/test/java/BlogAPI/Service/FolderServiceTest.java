@@ -18,25 +18,23 @@ public class FolderServiceTest {
 
     @Test
     public void addFolderTest() {
-        var folder = new Folder();
-        folder.setTitle("folder");
+        var folder = new Folder().setTitle("folder");
 
         folder = folderService.addFolder(folder);
 
-        var article = new Folder();
-        article.setTitle("test_article");
-        article.setParent(folder);
+        var article = new Folder()
+                .setTitle("test_article")
+                .setParent(folder);
         folderService.addFolder(article);
 
-        var article2 = new Folder();
-        article2.setTitle("test_article2");
-        article2.setParent(article);
+        var article2 = new Folder()
+                .setTitle("test_article2")
+                .setParent(article);
         folderService.addFolder(article2);
     }
     @Test
     public void removeFolderTest() {
-        var folder = new Folder();
-        folder.setUrl("/folder");
+        var folder = new Folder().setUrl("/folder");
         folderService.removeFolder(folder);
     }
 }

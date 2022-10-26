@@ -1,16 +1,14 @@
 package BlogAPI.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"roles"})
 public class SysPermission {
     @Id

@@ -1,7 +1,6 @@
 package BlogAPI.Entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -9,8 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 public class SysUser {
     @Id

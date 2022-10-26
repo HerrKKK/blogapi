@@ -53,18 +53,13 @@ public class InitService implements ApplicationRunner {
             admin.getRoles().add(roleService.addRole(role));
         } catch (Exception e) {
             log.info("admin role existed");
+            return;
         }
-        try {
-            userDao.save(admin);
-        } catch (Exception e) {
-            log.info("admin existed");
-        }
+        userDao.save(admin);
     }
     private void addRootPath() {
-        var rootFolder = new Folder();
-        rootFolder.setUrl("");
         try {
-            folderDao.save(rootFolder);
+            folderDao.save(new Folder().setUrl(""));
         } catch (Exception e) {
             log.info("root path existed");
         }
