@@ -15,7 +15,16 @@ public class Folder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
-
+    private String createdTime;
+    private String modifiedTime;
+    private String content;
+    private String url;
+    @OneToOne
+    private SysUser author;
+    @OneToOne
+    private Folder parent;
     @OneToMany
     private Set<Folder> subFolders = new HashSet<>();
+    @ManyToMany
+    Set<Tag> tags = new HashSet<>();
 }

@@ -17,7 +17,8 @@ public class FolderService {
         this.folderDao = folderDao;
     }
 
-    Folder addFolder(Folder folder, Folder parent) {
+    Folder addFolder(Folder folder) {
+        var parent = folder.getParent();
         if (parent != null && parent.getId() != 0) {
             parent.getSubFolders().add(folder);
             folderDao.save(parent);

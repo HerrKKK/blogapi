@@ -20,5 +20,5 @@ public class Tag {
     private String description;
 
     @ManyToMany(mappedBy = "tags")
-    Set<Content> articles = new HashSet<>();
+    Set<Folder> folders = new HashSet<>();
 }
