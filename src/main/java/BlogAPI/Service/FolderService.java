@@ -17,7 +17,7 @@ public class FolderService {
         this.folderDao = folderDao;
     }
 
-    Folder addFolder(Folder folder) {
+    public Folder addFolder(Folder folder) {
         var parent = folder.getParent();
         if (parent != null && parent.getId() != 0) {
             parent.getSubFolders().add(folder);
@@ -26,7 +26,7 @@ public class FolderService {
 
         return folderDao.save(folder);
     }
-    List<Folder> findFolder(Folder folder) {
+    public List<Folder> findFolders(Folder folder) {
         var matcher = ExampleMatcher
                                     .matching()
                                     .withIgnorePaths("subFolders");
@@ -35,14 +35,14 @@ public class FolderService {
         }
         return folderDao.findAll(Example.of(folder, matcher));
     }
-    Folder modifyFolder(Folder folder) {
+    public Folder modifyFolder(Folder folder) {
         if (folder.getId() == 0) {
             return null;
         }
         return folderDao.save(folder);
     }
-    void removeFolder(Folder folder) {
-        var folderList = findFolder(folder);
+    public void removeFolder(Folder folder) {
+        var folderList = findFolders(folder);
 
         for (var f : folderList) {
             folderDao.deleteAll(f.getSubFolders());
