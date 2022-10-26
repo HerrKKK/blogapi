@@ -3,6 +3,7 @@ package BlogAPI.Service;
 import BlogAPI.Entity.Folder;
 import BlogAPI.Mapper.FolderDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,27 @@ public class FolderService {
     FolderService(FolderDao folderDao) {
         this.folderDao = folderDao;
     }
+    @Value("${spring.custom.file-upload-path}")
 
     public Folder addFolder(Folder folder) {
+        // url format: '/xxxx/xxx/'
         var parent = folder.getParent();
-        if (parent != null && parent.getId() != 0) {
+
+        var url = new StringBuilder(folder.getTitle())
+                                  .append('/');
+        folder.setUrl(folder.getTitle());
+        if (parent != null) {
+            url.insert(0, parent.getUrl());
+        }
+        folder.setUrl(url.toString());
+
+        // test if url is unique first
+        var ret = folderDao.save(folder);
+        if (parent != null) {
             parent.getSubFolders().add(folder);
             folderDao.save(parent);
         }
-
-        return folderDao.save(folder);
+        return ret;
     }
     public List<Folder> findFolders(Folder folder) {
         var matcher = ExampleMatcher

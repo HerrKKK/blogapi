@@ -18,6 +18,8 @@ public class Folder {
     private String createdTime;
     private String modifiedTime;
     private String content;
+
+    @Column(unique = true)
     private String url;
     @OneToOne
     private SysUser author;
