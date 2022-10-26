@@ -42,13 +42,12 @@ public class InitService implements ApplicationRunner {
         addRootPath();
     }
     private void addAdmin() {
-        var admin = new SysUser();
-        admin.setUserName(adminUsername);
-        admin.setEmail(adminEmail);
-        admin.setPwdHash(adminPwdHash);
-        admin.setSalt(adminSalt);
-        var role = new SysRole();
-        role.setName("admin");
+        var admin = new SysUser()
+                .setUserName(adminUsername)
+                .setEmail(adminEmail)
+                .setPwdHash(adminPwdHash)
+                .setSalt(adminSalt);
+        var role = new SysRole().setName("admin");
 
         try {
             admin.getRoles().add(roleService.addRole(role));

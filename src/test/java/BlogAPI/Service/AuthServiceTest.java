@@ -16,9 +16,9 @@ public class AuthServiceTest extends TestBase {
     private AuthService authService;
     @Test
     public void testAuthentication() {
-        var user = new SysUser();
-        user.setUserName("wwr");
-        user.setPwdHash("blog password");
+        var user = new SysUser()
+                .setUserName("wwr")
+                .setPwdHash("blog password");
         authService.login(user);
         authService.logout();
     }

@@ -40,9 +40,9 @@ public class UserControllerTest {
 
     @Test
     public void addUserTest() throws Exception {
-        var user = new SysUser();
-        user.setUserName("wwr");
-        user.setPwdHash("password");
+        var user = new SysUser()
+                .setUserName("wwr")
+                .setPwdHash("password");
         authService.login(user);
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/user")
@@ -56,9 +56,9 @@ public class UserControllerTest {
     }
     @Test
     public void removeUserTest() throws Exception {
-        var user = new SysUser();
-        user.setUserName("wwr");
-        user.setPwdHash("password");
+        var user = new SysUser()
+                .setUserName("wwr")
+                .setPwdHash("password");
         authService.login(user);
         RequestBuilder request = MockMvcRequestBuilders
                 .delete("/user")
