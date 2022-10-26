@@ -8,14 +8,19 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class FolderService {
     final private FolderDao folderDao;
+    private SimpleDateFormat simpleDateFormat;
     @Autowired
     FolderService(FolderDao folderDao) {
         this.folderDao = folderDao;
+        this.simpleDateFormat =
+                new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
     }
     @Value("${spring.custom.file-upload-path}")
 
@@ -30,6 +35,7 @@ public class FolderService {
             url.insert(0, parent.getUrl());
         }
         folder.setUrl(url.toString());
+        folder.setCreatedTime(simpleDateFormat.format(new Date()));
 
         // test if url is unique first
         var ret = folderDao.save(folder);
@@ -52,6 +58,7 @@ public class FolderService {
         if (folder.getId() == 0) {
             return null;
         }
+        folder.setModifiedTime(simpleDateFormat.format(new Date()));
         return folderDao.save(folder);
     }
     public void removeFolder(Folder folder) {
