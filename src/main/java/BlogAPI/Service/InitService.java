@@ -1,9 +1,12 @@
 package BlogAPI.Service;
 
+import BlogAPI.Entity.Folder;
 import BlogAPI.Entity.SysRole;
 import BlogAPI.Entity.SysUser;
+import BlogAPI.Mapper.FolderDao;
 import BlogAPI.Mapper.UserDao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,17 +26,22 @@ public class InitService implements ApplicationRunner {
 
     private final UserDao userDao;
     private final RoleService roleService;
+    private final FolderDao folderDao;
+    @Autowired
     public InitService(UserDao userDao,
-                       RoleService roleService) {
+                       RoleService roleService,
+                       FolderDao folderDao) {
         this.userDao = userDao;
         this.roleService = roleService;
+        this.folderDao = folderDao;
     }
 
     @Override
     public void run(ApplicationArguments args) {
         addAdmin();
+        addRootPath();
     }
-    public void addAdmin() {
+    private void addAdmin() {
         var admin = new SysUser();
         admin.setUserName(adminUsername);
         admin.setEmail(adminEmail);
@@ -51,6 +59,15 @@ public class InitService implements ApplicationRunner {
             userDao.save(admin);
         } catch (Exception e) {
             log.info("admin existed");
+        }
+    }
+    private void addRootPath() {
+        var rootFolder = new Folder();
+        rootFolder.setUrl("");
+        try {
+            folderDao.save(rootFolder);
+        } catch (Exception e) {
+            log.info("root path existed");
         }
     }
 }

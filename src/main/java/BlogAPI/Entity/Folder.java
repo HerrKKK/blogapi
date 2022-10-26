@@ -21,12 +21,13 @@ public class Folder {
 
     @Column(unique = true)
     private String url;
-    @OneToOne
+    @ManyToOne
     private SysUser author;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Folder parent;
-    @OneToMany
+    @OneToMany(mappedBy="parent",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private Set<Folder> subFolders = new HashSet<>();
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     Set<Tag> tags = new HashSet<>();
 }

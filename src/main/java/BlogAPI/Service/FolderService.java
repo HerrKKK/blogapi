@@ -2,59 +2,60 @@ package BlogAPI.Service;
 
 import BlogAPI.Entity.Folder;
 import BlogAPI.Mapper.FolderDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 public class FolderService {
     final private FolderDao folderDao;
-    private SimpleDateFormat simpleDateFormat;
+    final private SimpleDateFormat simpleDateFormat;
     @Autowired
     FolderService(FolderDao folderDao) {
         this.folderDao = folderDao;
         this.simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
     }
-    @Value("${spring.custom.file-upload-path}")
-    private String rootPath;
 
     public Folder addFolder(Folder folder) {
         // url format: '/xxxx/xxx'
-        var parent = folder.getParent();
-
-        var url = new StringBuilder();
-        if (parent != null) {
-            url.insert(0, parent.getUrl());
-        } else {
-            url.insert(0, rootPath);
+        Folder parent = findFolders(folder.getParent())
+                       .stream()
+                       .findFirst()
+                       .orElse(null);
+        if (parent == null) {
+            var pattern = new Folder();
+            pattern.setUrl(""); // root folder
+            parent = findFolders(pattern).get(0);
         }
 
-        folder.setUrl(url.append('/')
-                         .append(folder.getTitle())
-                         .toString());
+        folder.setParent(parent);
+        folder.setUrl(parent.getUrl() + '/' + folder.getTitle());
         folder.setCreatedTime(simpleDateFormat.format(new Date()));
-
+        log.info(folder.getUrl());
         // test if url is unique first
-        var ret = folderDao.save(folder);
-        if (parent != null) {
-            parent.getSubFolders().add(folder);
-            folderDao.save(parent);
-        }
-        return ret;
+        return folderDao.save(folder);
     }
     public List<Folder> findFolders(Folder folder) {
+        if (folder == null) {
+            return new ArrayList<>();
+        }
         var matcher = ExampleMatcher
                                     .matching()
                                     .withIgnorePaths("subFolders");
         if (folder.getId() == 0) {
             matcher = matcher.withIgnorePaths("id");
+        }
+        if (folder.getTags().size() == 0) {
+            matcher = matcher.withIgnorePaths("tags");
         }
         return folderDao.findAll(Example.of(folder, matcher));
     }
@@ -66,11 +67,9 @@ public class FolderService {
         return folderDao.save(folder);
     }
     public void removeFolder(Folder folder) {
-        var folderList = findFolders(folder);
-
-        for (var f : folderList) {
-            folderDao.deleteAll(f.getSubFolders());
-            folderDao.delete(f);
+        if (folder.getUrl().equals("")) {
+            return;
         }
+        folderDao.deleteAll(findFolders(folder));
     }
 }

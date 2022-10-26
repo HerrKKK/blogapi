@@ -1,7 +1,9 @@
 package BlogAPI.Service;
 
 import BlogAPI.BlogApiApplication;
+import BlogAPI.Entity.Folder;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,4 +15,28 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class FolderServiceTest {
     @Autowired
     private FolderService folderService;
+
+    @Test
+    public void addFolderTest() {
+        var folder = new Folder();
+        folder.setTitle("folder");
+
+        folder = folderService.addFolder(folder);
+
+        var article = new Folder();
+        article.setTitle("test_article");
+        article.setParent(folder);
+        folderService.addFolder(article);
+
+        var article2 = new Folder();
+        article2.setTitle("test_article2");
+        article2.setParent(article);
+        folderService.addFolder(article2);
+    }
+    @Test
+    public void removeFolderTest() {
+        var folder = new Folder();
+        folder.setUrl("/folder");
+        folderService.removeFolder(folder);
+    }
 }
