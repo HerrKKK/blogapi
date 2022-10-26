@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
@@ -24,8 +23,8 @@ public class ShiroConfig {
         var filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
-         filterChainDefinitionMap.put("/**", "authc");
-        // filterChainDefinitionMap.put("/**", "anon");
+        // filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
 
@@ -43,9 +42,8 @@ public class ShiroConfig {
     }
     @Bean
     public CustomRealm CustomRealm() {
-        var customRealm = new CustomRealm();
         // customRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return customRealm;
+        return new CustomRealm();
     }
     @Bean
     public SecurityManager securityManager() {
