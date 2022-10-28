@@ -3,6 +3,7 @@ package BlogAPI.Service;
 import BlogAPI.BlogApiApplication;
 import BlogAPI.Entity.Content;
 import BlogAPI.Entity.Folder;
+import BlogAPI.Entity.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,11 +39,9 @@ public class ResourceServiceTest {
         resourceService.removeResource(folder);
     }
     @Test
-    public void getFolders() {
+    public void getAllFoldersTest() {
         var folders = resourceService
-                .findResources(new Folder().setTitle("folder"));
-        for (var folder : folders) {
-            log.info(String.valueOf(folder.getId()));
-        }
+                .findResources(new Folder().setUrl(""));
+        log.info(folders.get(0).toString());
     }
 }
