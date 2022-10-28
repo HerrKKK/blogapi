@@ -10,7 +10,7 @@ import javax.persistence.Lob;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Content extends Folder {
+public class Content extends Resource {
     @Lob
     private byte[] content;
 }

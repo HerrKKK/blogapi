@@ -2,7 +2,6 @@ package BlogAPI.Service;
 
 import BlogAPI.BlogApiApplication;
 import BlogAPI.Entity.Content;
-import BlogAPI.Entity.Dir;
 import BlogAPI.Entity.Folder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -14,33 +13,34 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BlogApiApplication.class)
-public class FolderServiceTest {
+public class ResourceServiceTest {
     @Autowired
-    private FolderService folderService;
+    private ResourceService resourceService;
 
     @Test
-    public void addFolderTest() {
-        var folder = new Dir().setTitle("folder");
+    public void addResourcesTest() {
+        var folder = new Folder().setTitle("folder");
 
-        folder = folderService.addFolder(folder);
+        folder = resourceService.addResource(folder);
 
         var article = new Content()
                 .setContent("test".getBytes())
                 .setTitle("article")
                 .setParent(folder);
-        folder.getSubFolders().add(article);
-        folderService.modifyFolder(folder);
-        folderService.addFolder(article);
+        folder.getSubResources().add(article);
+        resourceService.modifyResource(folder);
+        resourceService.addResource(article);
     }
     @Test
     public void removeFolderTest() {
-        var folder = new Dir().setTitle("folder");
-        folderService.removeFolder(folder);
+        var folder = new Folder().setTitle("folder");
+        log.info(String.valueOf(folder.getId()));
+        resourceService.removeResource(folder);
     }
     @Test
     public void getFolders() {
-        var folders = folderService
-                .findFolders(new Dir());
+        var folders = resourceService
+                .findResources(new Folder().setTitle("folder"));
         for (var folder : folders) {
             log.info(String.valueOf(folder.getId()));
         }

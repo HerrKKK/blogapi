@@ -1,10 +1,8 @@
 package BlogAPI.Controller;
 
 import BlogAPI.Common.Model.Response;
-import BlogAPI.Entity.Folder;
-import BlogAPI.Entity.SysUser;
-import BlogAPI.Service.AuthService;
-import BlogAPI.Service.FolderService;
+import BlogAPI.Entity.Resource;
+import BlogAPI.Service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,41 +13,41 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping(value="/folder")
-public class FolderController {
-    private final FolderService folderService;
+public class ResourceController {
+    private final ResourceService resourceService;
     @Autowired
-    FolderController(FolderService folderService) {
-        this.folderService = folderService;
+    ResourceController(ResourceService resourceService) {
+        this.resourceService = resourceService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Response addFolder(@RequestBody Folder folder) {
+    public Response addFolder(@RequestBody Resource resource) {
         try {
-            return new Response(folderService.addFolder(folder));
+            return new Response(resourceService.addResource(resource));
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
     @RequestMapping(method = RequestMethod.GET)
-    public Response getFolder(@RequestBody Folder folder) {
+    public Response getFolder(@RequestBody Resource resource) {
         try {
-            return new Response(folderService.findFolders(folder));
+            return new Response(resourceService.findResources(resource));
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
     @RequestMapping(method = RequestMethod.PUT)
-    public Response updateFolder(@RequestBody Folder folder) {
+    public Response updateFolder(@RequestBody Resource resource) {
         try {
-            return new Response(folderService.modifyFolder(folder));
+            return new Response(resourceService.modifyResource(resource));
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
     @RequestMapping(method = RequestMethod.DELETE)
-    public Response deleteFolder(@RequestBody Folder folder) {
+    public Response deleteFolder(@RequestBody Resource resource) {
         try {
-            folderService.removeFolder(folder);
+            resourceService.removeResource(resource);
             return new Response();
         } catch (Exception e) {
             return new Response(e.getMessage());

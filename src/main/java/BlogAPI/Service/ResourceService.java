@@ -1,8 +1,8 @@
 package BlogAPI.Service;
 
 import BlogAPI.Entity.Content;
-import BlogAPI.Entity.Folder;
-import BlogAPI.Mapper.FolderDao;
+import BlogAPI.Entity.Resource;
+import BlogAPI.Mapper.ResourceDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -14,71 +14,71 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class FolderService {
-    final private FolderDao folderDao;
+public class ResourceService {
+    final private ResourceDao resourceDao;
     final private SimpleDateFormat simpleDateFormat;
     @Autowired
-    FolderService(FolderDao folderDao) {
-        this.folderDao = folderDao;
+    ResourceService(ResourceDao resourceDao) {
+        this.resourceDao = resourceDao;
         this.simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
     }
 
-    public Folder addFolder(Folder folder) {
+    public Resource addResource(Resource resource) {
         // url format: '/xxxx/xxx'
-        Folder parent = findFolders(folder.getParent())
+        Resource parent = findResources(resource.getParent())
                        .stream()
                        .findFirst()
                        .orElse(null);
         if (parent == null) {
-            parent = findFolders(new Folder()
+            parent = findResources(new Resource()
                         .setUrl(""))
                         .get(0);// root folder
         }
 
-        folder.setParent(parent);
-        folder.setCreatedTime(simpleDateFormat.format(new Date()));
+        resource.setParent(parent);
+        resource.setCreatedTime(simpleDateFormat.format(new Date()));
 
-        var name = folder instanceof Content?
+        var name = resource instanceof Content?
                         UUID.randomUUID().toString():
-                        folder.getTitle();
-        folder.setUrl(parent.getUrl() + '/' + name);
+                        resource.getTitle();
+        resource.setUrl(parent.getUrl() + '/' + name);
 
         // test if url is unique first
-        return folderDao.save(folder);
+        return resourceDao.save(resource);
     }
-    public List<Folder> findFolders(Folder folder) {
-        if (folder == null) {
+    public List<Resource> findResources(Resource resource) {
+        if (resource == null) {
             return new ArrayList<>();
         }
         var matcher = ExampleMatcher
                                     .matching()
                                     .withIgnorePaths("subFolders");
-        if (folder.getId() == 0) {
+        if (resource.getId() == 0) {
             matcher = matcher.withIgnorePaths("id");
         }
-        if (folder.getTags().size() == 0) {
+        if (resource.getTags().size() == 0) {
             matcher = matcher.withIgnorePaths("tags");
         }
 
-        return folderDao.findAll(Example.of(folder, matcher));
+        return resourceDao.findAll(Example.of(resource, matcher));
     }
-    public Folder modifyFolder(Folder folder) {
-        if (folder.getId() == 0) {
+    public Resource modifyResource(Resource resource) {
+        if (resource.getId() == 0) {
             return null;
         }
-        folder.setModifiedTime(simpleDateFormat.format(new Date()));
-        return folderDao.save(folder);
+        resource.setModifiedTime(simpleDateFormat.format(new Date()));
+        return resourceDao.save(resource);
     }
-    public void removeFolder(Folder folder) {
-        var url = folder.getUrl();
+    public void removeResource(Resource resource) {
+        var url = resource.getUrl();
         if (url != null && url.equals("")) {
             return;
         }
-        if (folder.getId() != 0) {
-            folderDao.delete(folder);
+        if (resource.getId() != 0) {
+            resourceDao.delete(resource);
             return;
         }
-        folderDao.deleteAll(findFolders(folder));
+        resourceDao.deleteAll(findResources(resource));
     }
 }
