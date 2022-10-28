@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -38,7 +39,7 @@ public class FolderService {
         }
 
         folder.setParent(parent);
-        folder.setUrl(parent.getUrl() + '/' + folder.getTitle());
+        folder.setUrl(parent.getUrl() + '/' + UUID.randomUUID());
         folder.setCreatedTime(simpleDateFormat.format(new Date()));
         log.info(folder.getUrl());
         // test if url is unique first
