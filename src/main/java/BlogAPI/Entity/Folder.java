@@ -1,6 +1,7 @@
 package BlogAPI.Entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -8,7 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 public class Folder {
     @Id
@@ -17,15 +19,16 @@ public class Folder {
     private String title;
     private String createdTime;
     private String modifiedTime;
-    private String content;
 
     @Column(unique = true)
     private String url;
     @ManyToOne
     private SysUser author;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     private Folder parent;
-    @OneToMany(mappedBy="parent",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="parent",
+               cascade=CascadeType.REMOVE,
+               fetch=FetchType.EAGER)
     private Set<Folder> subFolders = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

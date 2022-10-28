@@ -1,5 +1,6 @@
 package BlogAPI.Service;
 
+import BlogAPI.Entity.Content;
 import BlogAPI.Entity.Folder;
 import BlogAPI.Mapper.FolderDao;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +10,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -39,9 +37,13 @@ public class FolderService {
         }
 
         folder.setParent(parent);
-        folder.setUrl(parent.getUrl() + '/' + UUID.randomUUID());
         folder.setCreatedTime(simpleDateFormat.format(new Date()));
-        log.info(folder.getUrl());
+
+        var name = folder instanceof Content?
+                        UUID.randomUUID().toString():
+                        folder.getTitle();
+        folder.setUrl(parent.getUrl() + '/' + name);
+
         // test if url is unique first
         return folderDao.save(folder);
     }
@@ -58,6 +60,7 @@ public class FolderService {
         if (folder.getTags().size() == 0) {
             matcher = matcher.withIgnorePaths("tags");
         }
+
         return folderDao.findAll(Example.of(folder, matcher));
     }
     public Folder modifyFolder(Folder folder) {
@@ -68,7 +71,12 @@ public class FolderService {
         return folderDao.save(folder);
     }
     public void removeFolder(Folder folder) {
-        if (folder.getUrl().equals("")) {
+        var url = folder.getUrl();
+        if (url != null && url.equals("")) {
+            return;
+        }
+        if (folder.getId() != 0) {
+            folderDao.delete(folder);
             return;
         }
         folderDao.deleteAll(findFolders(folder));

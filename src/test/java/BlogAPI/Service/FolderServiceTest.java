@@ -1,6 +1,8 @@
 package BlogAPI.Service;
 
 import BlogAPI.BlogApiApplication;
+import BlogAPI.Entity.Content;
+import BlogAPI.Entity.Dir;
 import BlogAPI.Entity.Folder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -18,23 +20,29 @@ public class FolderServiceTest {
 
     @Test
     public void addFolderTest() {
-        var folder = new Folder().setTitle("folder");
+        var folder = new Dir().setTitle("folder");
 
         folder = folderService.addFolder(folder);
 
-        var article = new Folder()
-                .setTitle("test_article")
+        var article = new Content()
+                .setContent("test".getBytes())
+                .setTitle("article")
                 .setParent(folder);
+        folder.getSubFolders().add(article);
+        folderService.modifyFolder(folder);
         folderService.addFolder(article);
-
-        var article2 = new Folder()
-                .setTitle("test_article2")
-                .setParent(article);
-        folderService.addFolder(article2);
     }
     @Test
     public void removeFolderTest() {
-        var folder = new Folder().setUrl("/folder");
+        var folder = new Dir().setTitle("folder");
         folderService.removeFolder(folder);
+    }
+    @Test
+    public void getFolders() {
+        var folders = folderService
+                .findFolders(new Dir());
+        for (var folder : folders) {
+            log.info(String.valueOf(folder.getId()));
+        }
     }
 }
