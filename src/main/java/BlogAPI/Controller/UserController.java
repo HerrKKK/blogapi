@@ -3,15 +3,12 @@ package BlogAPI.Controller;
 import BlogAPI.Common.Model.Response;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Service.UserService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value="/user")
 public class UserController {
     private final UserService userService;
