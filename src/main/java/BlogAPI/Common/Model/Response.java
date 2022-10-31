@@ -1,10 +1,10 @@
 package BlogAPI.Common.Model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
+@Accessors(chain = true)
 public class Response {
     public Response() { status = "success"; }
     public Response(Object obj) {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value="/folder")
+@RequestMapping(value="/resource")
 public class ResourceController {
     private final ResourceService resourceService;
     @Autowired
@@ -21,7 +21,7 @@ public class ResourceController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Response addFolder(@RequestBody Resource resource) {
+    public Response addResource(@RequestBody Resource resource) {
         try {
             return new Response(resourceService.addResource(resource));
         } catch (Exception e) {
@@ -29,15 +29,29 @@ public class ResourceController {
         }
     }
     @RequestMapping(method = RequestMethod.GET)
-    public Response getFolder(Resource resource) {
+    public Response getResource(Resource resource) {
         try {
             return new Response(resourceService.findResources(resource));
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
     }
+    @RequestMapping(value = "/subResources",
+                    method = RequestMethod.GET)
+    public Response getSubResources(Resource resource) {
+        try {
+            var resources = resourceService
+                    .findResources(resource);
+            if (resources.size() != 1) {
+                return new Response("Get "+resources.size()+" resource");
+            }
+            return new Response().setObj(resources.get(0).getSubResources());
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+    }
     @RequestMapping(method = RequestMethod.PUT)
-    public Response updateFolder(@RequestBody Resource resource) {
+    public Response updateResource(@RequestBody Resource resource) {
         try {
             return new Response(resourceService.modifyResource(resource));
         } catch (Exception e) {
@@ -45,7 +59,7 @@ public class ResourceController {
         }
     }
     @RequestMapping(method = RequestMethod.DELETE)
-    public Response deleteFolder(@RequestBody Resource resource) {
+    public Response deleteResource(@RequestBody Resource resource) {
         try {
             resourceService.removeResource(resource);
             return new Response();
