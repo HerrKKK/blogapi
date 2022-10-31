@@ -1,7 +1,6 @@
 package BlogAPI.Service;
 
 import BlogAPI.Entity.Folder;
-import BlogAPI.Entity.Resource;
 import BlogAPI.Entity.SysRole;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.ResourceDao;
@@ -55,9 +54,7 @@ public class InitService implements ApplicationRunner {
     }
     private void addRootPath() {
         try {
-            resourceDao.save(new Folder().setUrl("/blogs")
-                                         .setParent(new Folder()
-                                                 .setUrl("")));
+            resourceDao.save(new Folder().setUrl(""));
         } catch (Exception e) {
             log.info("root path existed");
         }
