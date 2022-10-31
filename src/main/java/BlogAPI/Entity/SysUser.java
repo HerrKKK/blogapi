@@ -1,5 +1,6 @@
 package BlogAPI.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 @Entity
 @Data
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"pwdHash","salt"})
 public class SysUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
