@@ -2,6 +2,8 @@ package BlogAPI.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Entity
 @Data
 @Accessors(chain = true)
+@ToString(exclude = {"users"})
+@EqualsAndHashCode(exclude = {"users"})
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"users"})
 public class SysRole {
     @Id

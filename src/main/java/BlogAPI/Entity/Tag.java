@@ -2,6 +2,8 @@ package BlogAPI.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @Entity
 @Data
+@ToString(exclude = {"resources"})
+@EqualsAndHashCode(exclude = {"resources"})
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"articles"})
 public class Tag {
