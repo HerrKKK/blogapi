@@ -1,5 +1,6 @@
 package BlogAPI.Common.shiro;
 
+import BlogAPI.Common.Util.SecurityUtil;
 import BlogAPI.Entity.SysUser;
 import BlogAPI.Mapper.UserDao;
 import BlogAPI.Service.UserService;
@@ -16,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashSet;
 
 public class CustomRealm extends AuthorizingRealm {
-    @Autowired
-    private UserDao userDao;
     @Autowired
     private UserService userService;
 
@@ -66,7 +65,8 @@ public class CustomRealm extends AuthorizingRealm {
         }
 
         return new SimpleAuthenticationInfo(userName,
-                                            sysUser.getPwdHash(),
+                SecurityUtil.encrypt(sysUser.getPwdHash(),
+                                     sysUser.getSalt()),
                                             getName());
     }
 }
