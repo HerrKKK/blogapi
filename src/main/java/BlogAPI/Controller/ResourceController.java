@@ -29,7 +29,7 @@ public class ResourceController {
         }
     }
     @RequestMapping(method = RequestMethod.GET)
-    public Response getFolder(@RequestBody Resource resource) {
+    public Response getFolder(Resource resource) {
         try {
             return new Response(resourceService.findResources(resource));
         } catch (Exception e) {

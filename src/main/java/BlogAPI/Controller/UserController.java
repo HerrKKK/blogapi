@@ -32,7 +32,7 @@ public class UserController {
 
     @RequestMapping(method=RequestMethod.GET)
     @RequiresRoles("admin")
-    public Response getUser(@RequestBody SysUser user) {
+    public Response getUser(SysUser user) {
         try {
             return new Response(userService.findUsers(user));
         } catch (Exception e) {
