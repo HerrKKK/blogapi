@@ -26,14 +26,11 @@ public class InitService implements ApplicationRunner {
     private String adminEmail;
 
     private final UserDao userDao;
-    private final RoleService roleService;
     private final ResourceDao resourceDao;
     @Autowired
     public InitService(UserDao userDao,
-                       RoleService roleService,
                        ResourceDao resourceDao) {
         this.userDao = userDao;
-        this.roleService = roleService;
         this.resourceDao = resourceDao;
     }
 
@@ -48,19 +45,19 @@ public class InitService implements ApplicationRunner {
                 .setEmail(adminEmail)
                 .setPwdHash(adminPwdHash)
                 .setSalt(adminSalt);
-        var role = new SysRole().setName("admin");
+        admin.getRoles().add(new SysRole().setName("admin"));
 
         try {
-            admin.getRoles().add(roleService.addRole(role));
+            userDao.save(admin);
         } catch (Exception e) {
             log.info("admin role existed");
-            return;
         }
-        userDao.save(admin);
     }
     private void addRootPath() {
         try {
-            resourceDao.save(new Folder().setUrl(""));
+            resourceDao.save(new Folder().setUrl("/blogs")
+                                         .setParent(new Folder()
+                                                 .setUrl("")));
         } catch (Exception e) {
             log.info("root path existed");
         }

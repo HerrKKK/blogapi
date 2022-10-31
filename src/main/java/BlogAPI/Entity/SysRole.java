@@ -24,6 +24,7 @@ public class SysRole {
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<SysUser> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,
+                cascade=CascadeType.ALL)
     private Set<SysPermission> permissions = new HashSet<>();
 }

@@ -28,7 +28,8 @@ public class Resource {
     private String url;
     @ManyToOne
     private SysUser author;
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(cascade=CascadeType.PERSIST,
+               fetch=FetchType.EAGER)
     private Resource parent;
     @OneToMany(mappedBy="parent",
                cascade=CascadeType.REMOVE,
