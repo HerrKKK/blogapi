@@ -1,3 +1,3 @@
 # blogapi
 springboot blog api
-this is deprecated because Java is PoS for a personal project
+this is deprecated because Java is a PoS for a personal project
